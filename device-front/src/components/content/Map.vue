@@ -1,5 +1,14 @@
 <template>
-  <div id="container"></div>
+    <!-- <el-dropdown @command="handleCommand">
+      <span class="el-dropdown-link">
+        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="all">黄金糕</el-dropdown-item>
+        <el-dropdown-item command="10">狮子头</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown> -->
+    <div id="container"></div>
 </template>
 
 <script>
@@ -41,16 +50,16 @@ export default {
 
             var polyline = new AMap.Polyline({
                 path: path,
-                strokeColor: "#FF0000",  // 线颜色
-                strokeOpacity: 1,        // 线透明度
+                strokeColor: "#00008B",  // 线颜色
+                strokeOpacity: 0.5,        // 线透明度
                 strokeWeight: 3,         // 线宽
                 strokeStyle: "solid",    // 线样式
-                strokeDasharray: [10, 5] // 补充线样式
+                strokeDasharray: [10, 5], // 补充线样式
             });
 
             self.map.add(polyline);
-            if (self.logisticsInfoList && self.logisticsInfoList.length >= 2) {
-                    console.log('开始规划路径');
+            
+            if (self.logisticsInfoList && self.logisticsInfoList.length >= 2) {//添加图标
                     const list = [...self.logisticsInfoList];
                     // 取出 起点、终点、途径点
                     const start = list.shift();
@@ -151,45 +160,6 @@ export default {
                         });
                     });
             }
-        //   AMapUI.load(['ui/misc/PathSimplifier'], function(PathSimplifier) {
-        //     var pathSimplifierIns = new PathSimplifier({
-        //     zIndex: 300,
-        //     map: self.map, //所属的地图实例
-        //     getPath: function(pathData, pathIndex) {
-        //         //返回轨迹数据中的节点坐标信息，[AMap.LngLat, AMap.LngLat...] 或者 [[lng|number,lat|number],...]
-        //         return pathData.path;
-        //     },
-        //     getHoverTitle: function(pathData, pathIndex, pointIndex) {
-        //         //返回鼠标悬停时显示的信息
-        //         if (pointIndex >= 0) {
-        //             //鼠标悬停在某个轨迹节点上
-        //             return pathData.name + '，点:' + pointIndex + '/' + pathData.path.length;
-        //         }
-        //         //鼠标悬停在节点之间的连线上
-        //         return pathData.name + '，点数量' + pathData.path.length;
-        //     },
-        //     renderOptions: {
-        //         //轨迹线的样式
-        //         pathLineStyle: {
-        //             strokeStyle: 'red',
-        //             lineWidth: 6,
-        //             dirArrowStyle: true
-        //         }
-        //     }
-        //     });
-        //     let path = self.logisticsInfoList.map(message => [message.lng, message.lat]);
-        //     pathSimplifierIns.setData([{
-        //         name: '轨迹0',
-        //         path: path
-        //     }]);
-        //      var navg0 = pathSimplifierIns.createPathNavigator(0, //关联第1条轨迹
-        //     {
-        //         loop: true, //循环播放
-        //         speed: 1000000
-        //     });
-
-        //     navg0.start();
-        //   });
 
           // 加载插件 - AMap.Drivin
             // AMap.plugin('AMap.Driving', function () {
@@ -315,20 +285,39 @@ export default {
             // });
         });
     },
+
+     handleCommand(command) {
+        this.map_init();
+        if(command==='10') this.logisticsInfoList=this.logisticsInfoList.slice(0,10);
+     },
+
+     map_init(){
+          axios.get('/user/Navigation/myDevice/devInformation/map',{
+          params:{
+            id:this.$store.state.dev_id,
+            token:this.$store.state.token
+          }
+        }).then(res => {
+            if(res.data.success){
+                this.logisticsInfoList = res.data.data.messages;
+                this.initMap()
+            }
+        })
+     }
   },
   mounted() {
     //DOM初始化完成进行地图初始化
     axios.get('/user/Navigation/myDevice/devInformation/map',{
-      params:{
-        id:this.$store.state.dev_id,
-        token:this.$store.state.token
-      }
-    }).then(res => {
-        if(res.data.success){
-            this.logisticsInfoList = res.data.data.messages;
-            this.initMap()
-        }
-    })
+          params:{
+            id:this.$store.state.dev_id,
+            token:this.$store.state.token
+          }
+        }).then(res => {
+            if(res.data.success){
+                this.logisticsInfoList = res.data.data.messages;
+                this.initMap()
+            }
+        })
   }
 }
 </script>
@@ -340,5 +329,13 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+  // .el-dropdown-link {
+  //   cursor: pointer;
+  //   color: #409EFF;
+  // }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>
 

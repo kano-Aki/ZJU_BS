@@ -18,11 +18,6 @@
               label="类型"
               width="columnWidth">
             </el-table-column>
-            <el-table-column
-              prop="state"
-              label="状态"
-              width="columnWidth">
-            </el-table-column>
             <el-table-column label="操作">
             <template slot-scope="scope">
                 <el-button
@@ -76,6 +71,11 @@ export default {
           }
         }).then(res => {
           this.getDeviceList();//调用getDeviceList()方法，刷新页面
+          this.$message({
+                    showClose: true,
+                    message: '删除成功',
+                    type: 'success'
+                });
         })
         console.log(row);
       },
@@ -101,7 +101,7 @@ export default {
         })
       },
       updateColumnWidth() {
-          this.columnWidth = window.innerWidth / 5;
+          this.columnWidth = window.innerWidth / 4;
       }
     },
 

@@ -11,12 +11,13 @@ router.beforeEach(async(to, from, next) => {
     const hasToken = store.state.token;
 
     if(hasToken){
-        if(to.path === '/login'){   //已登录时若前往登录页，则重定向到首页
-            next({path:'/user/Navigation/homePage'})
-        }
-        else{
-            next()
-        }
+        // if(to.path === '/login'){   //已登录时若前往登录页，则重定向到首页
+        //     next({path:'/user/Navigation/myDevice/devInformation'})
+        // }
+        // else{
+        //     next()
+        // }
+        next();
     }
     else{   //未登录
         if(whiteList.indexOf(to.path) !== -1){  //白名单中的路由直接放行

@@ -7,9 +7,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.util.Random;
 
 public class IOTServer {
-    private String mqttServer="tcp://localhost:1883";
+    private String mqttServer="tcp://broker-cn.emqx.io:1883";
     private String topic="testapp";
-    private String clientId="server";
+    private String clientId="server_4111";
 
     public IOTServer(){
         try {

@@ -50,11 +50,11 @@ public class PushCallback implements MqttCallback {
             int qos = 2;
             int keepalive=20;
             MemoryPersistence persistence = new MemoryPersistence();
-            MqttClient mqttClient = new MqttClient("tcp://localhost:1883", "server", persistence);
+            MqttClient mqttClient = new MqttClient("tcp://broker-cn.emqx.io:1883", "server_4111", persistence);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             connOpts.setKeepAliveInterval(keepalive);
-            System.out.println("Server connecting to broker: " + "tcp://localhost:1883");
+            System.out.println("Server connecting to broker: " + "tcp://broker-cn.emqx.io:1883");
             mqttClient.connect(connOpts);
             System.out.println("Connected");
 

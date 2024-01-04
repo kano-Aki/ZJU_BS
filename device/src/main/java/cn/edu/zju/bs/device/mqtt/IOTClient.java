@@ -8,7 +8,7 @@ import java.util.Vector;
 @Data
 public class IOTClient {
     int deviceId ;
-    String mqttServer = "tcp://localhost:1883";
+    String mqttServer = "tcp://broker-cn.emqx.io:1883";
     String topic = "testapp";
     String clientPrefix = "device";
     private WorkerThread thread;
